@@ -1,5 +1,5 @@
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
-import { Activity, Clock, SlidersHorizontal, TriangleAlert, type LucideIcon } from 'lucide-react-native';
+import { Activity, Clock, GraduationCap, SlidersHorizontal, TriangleAlert, type LucideIcon } from 'lucide-react-native';
 import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,6 +11,7 @@ import { Txt } from './primitives';
 
 const ITEMS: Record<string, { label: string; icon: LucideIcon }> = {
   index: { label: 'Ao vivo', icon: Activity },
+  alunos: { label: 'Alunos', icon: GraduationCap },
   alertas: { label: 'Alertas', icon: TriangleAlert },
   historico: { label: 'Histórico', icon: Clock },
   ajustes: { label: 'Ajustes', icon: SlidersHorizontal },
