@@ -141,16 +141,16 @@ export default function StudentsScreen() {
           }
           renderSectionHeader={({ section }) => (
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 18, marginBottom: 2 }}>
-              <Txt variant="label" color={section.warn ? colors.warning : colors.textMuted}>
+              <Txt variant="caption" color={section.warn ? colors.primaryText : colors.textMuted}>
                 {section.title}
               </Txt>
-              <Txt variant="monoSmall" color={colors.textFaint}>
+              <Txt variant="micro" color={colors.textFaint}>
                 {section.data.length}
               </Txt>
             </View>
           )}
           ListEmptyComponent={
-            <Txt variant="mono" color={colors.textMuted} style={{ marginTop: 16 }}>
+            <Txt variant="caption" color={colors.textMuted} style={{ marginTop: 16 }}>
               nenhum aluno encontrado
             </Txt>
           }
@@ -161,7 +161,7 @@ export default function StudentsScreen() {
               <SessionRow
                 user={item.user}
                 subtitle={idle ? `parado · ${activityCompact(a)}` : activityLine(a)}
-                subtitleColor={idle ? colors.warning : undefined}
+                subtitleColor={idle ? colors.primaryText : undefined}
                 right={idle ? formatDuration(now - a.lastActionAt) : formatDuration(now - a.since)}
                 last={index === section.data.length - 1}
                 onPress={() => openUser(item.user.id)}
@@ -186,22 +186,22 @@ export default function StudentsScreen() {
                 <Card style={{ padding: 16, gap: 8, opacity: pressed ? 0.7 : 1 }}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row', gap: 10 }}>
-                      <Txt variant="label" color={colors.textMuted}>
+                      <Txt variant="caption" color={colors.textMuted}>
                         {`Módulo ${pad(item.module.n)}`}
                       </Txt>
                       {item.module.premium ? (
-                        <Txt variant="label" color={colors.primaryText}>
+                        <Txt variant="caption" color={colors.primaryText}>
                           Premium
                         </Txt>
                       ) : null}
                     </View>
-                    <Txt variant="mono" color={item.now ? colors.success : colors.textFaint}>
+                    <Txt variant="caption" color={item.now ? colors.text : colors.textFaint}>
                       {`${item.now} agora`}
                     </Txt>
                   </View>
-                  <Txt variant="h2">{item.module.name}</Txt>
+                  <Txt variant="heading">{item.module.name}</Txt>
                   <ProgressBar value={item.avg} height={4} />
-                  <Txt variant="monoSmall" color={colors.textMuted}>
+                  <Txt variant="micro" color={colors.textMuted}>
                     {`${item.started} alunos · média ${Math.round(item.avg * 100)}% · ${item.module.lessons} lições`}
                   </Txt>
                 </Card>
@@ -231,19 +231,19 @@ export default function StudentsScreen() {
                 },
                 pressed && { opacity: 0.6 },
               ]}>
-              <Txt variant="mono" color={index < 3 ? colors.primaryText : colors.textFaint} style={{ width: 22 }}>
+              <Txt variant="caption" color={index < 3 ? colors.primaryText : colors.textFaint} style={{ width: 22 }}>
                 {pad(index + 1)}
               </Txt>
               <Avatar user={item} />
               <View style={{ flex: 1, gap: 3 }}>
-                <Txt variant="bodyMedium" numberOfLines={1}>
+                <Txt variant="bodyStrong" numberOfLines={1}>
                   {item.handle}
                 </Txt>
-                <Txt variant="monoSmall" color={colors.textMuted} numberOfLines={1}>
+                <Txt variant="micro" color={colors.textMuted} numberOfLines={1}>
                   {`nível ${levelFor(item.xp)} · ${item.streak} dias seguidos`}
                 </Txt>
               </View>
-              <Txt variant="mono" color={colors.textMuted}>
+              <Txt variant="caption" color={colors.textMuted}>
                 {`${formatXp(item.xp)} XP`}
               </Txt>
             </Pressable>

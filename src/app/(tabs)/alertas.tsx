@@ -80,7 +80,7 @@ export default function AlertsScreen() {
         keyExtractor={(a) => a.id}
         contentContainerStyle={{ paddingHorizontal: gutter, paddingBottom: 24, gap: 12 }}
         ListEmptyComponent={
-          <Txt variant="mono" color={colors.textMuted}>
+          <Txt variant="caption" color={colors.textMuted}>
             {tab === 'abertos' ? 'nenhum alerta aberto' : 'nenhum alerta resolvido'}
           </Txt>
         }

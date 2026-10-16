@@ -138,16 +138,16 @@ export default function HistoryScreen() {
         initialNumToRender={16}
         contentContainerStyle={{ paddingHorizontal: gutter, paddingBottom: 24 }}
         ListEmptyComponent={
-          <Txt variant="mono" color={colors.textMuted} style={{ marginTop: 16 }}>
+          <Txt variant="caption" color={colors.textMuted} style={{ marginTop: 16 }}>
             nenhum evento no período
           </Txt>
         }
         renderSectionHeader={({ section }) => (
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 18, marginBottom: 2 }}>
-            <Txt variant="label" color={colors.textMuted}>
+            <Txt variant="caption" color={colors.textMuted}>
               {section.title}
             </Txt>
-            <Txt variant="monoSmall" color={colors.textFaint}>
+            <Txt variant="micro" color={colors.textFaint}>
               {section.data.length}
             </Txt>
           </View>

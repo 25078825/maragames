@@ -76,7 +76,6 @@ const LAST_NAMES = [
   'mendes', 'cardoso', 'teixeira', 'vieira', 'campos',
 ];
 
-const TINTS: TintName[] = ['blue', 'olive', 'green', 'purple', 'teal', 'blue', 'green'];
 
 export type Rng = () => number;
 
@@ -277,10 +276,10 @@ export function createSeed(now: number): Seed {
   };
 
   // Contas do mockup
-  const lucas = add(makeUser('u-lucas', 'lucas', 'silva', 'Free', 'purple'));
-  const ana = add(makeUser('u-ana', 'ana', 'beatriz', 'Premium', 'blue', 'Ana Beatriz Costa'));
-  const joao = add(makeUser('u-joao', 'joao', 'pedro', 'Free', 'olive', 'João Pedro Lima'));
-  const maria = add(makeUser('u-maria', 'maria', 'clara', 'Premium', 'green', 'Maria Clara Souza'));
+  const lucas = add(makeUser('u-lucas', 'lucas', 'silva', 'Free', 'neutral'));
+  const ana = add(makeUser('u-ana', 'ana', 'beatriz', 'Premium', 'neutral', 'Ana Beatriz Costa'));
+  const joao = add(makeUser('u-joao', 'joao', 'pedro', 'Free', 'neutral', 'João Pedro Lima'));
+  const maria = add(makeUser('u-maria', 'maria', 'clara', 'Premium', 'neutral', 'Maria Clara Souza'));
   joao.blocked = true;
 
   const s = (userId: string, minutesAgo: number, device: number, ip: string, city: string, uf: string) => {
@@ -364,7 +363,7 @@ export function createSeed(now: number): Seed {
       n += 1;
       const r = rng();
       const plan: Plan = r < 0.6 ? 'Free' : r < 0.92 ? 'Premium' : 'Empresarial';
-      const u = add(makeUser(`u${n}`, first, last, plan, TINTS[n % TINTS.length]));
+      const u = add(makeUser(`u${n}`, first, last, plan, 'neutral'));
       seedProgress(rng, u);
       genericIds.push(u.id);
     }

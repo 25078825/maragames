@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useData } from '@/data/DataProvider';
 import { makeStyles, useTheme } from '@/theme/ThemeProvider';
-import { fonts } from '@/theme/tokens';
+import { fonts, type } from '@/theme/tokens';
 
 import { Txt } from './primitives';
 
@@ -51,7 +51,7 @@ export function TabBar({ state, navigation }: BottomTabBarProps) {
                 </View>
               ) : null}
             </View>
-            <Txt variant="tab" color={color} style={{ marginTop: 7 }}>
+            <Txt variant="micro" color={color} style={{ marginTop: 7 }}>
               {item.label}
             </Txt>
           </Pressable>
@@ -98,8 +98,9 @@ const useStyles = makeStyles((c) => ({
   },
   badgeText: {
     color: '#FFFFFF',
-    fontFamily: fonts.monoMedium,
-    fontSize: 9.5,
-    lineHeight: 12,
+    ...type.micro,
+    fontFamily: fonts.semibold,
+    fontSize: 10,
+    lineHeight: 13,
   },
 }));

@@ -40,16 +40,16 @@ function LiveCard() {
     <Card style={{ overflow: 'hidden', paddingTop: 18 }}>
       <View style={{ paddingHorizontal: 18 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Txt variant="label" color={colors.textMuted}>
+          <Txt variant="caption" color={colors.textMuted}>
             Sessões ativas
           </Txt>
-          <Txt variant="monoSmall" color={colors.textFaint}>
+          <Txt variant="micro" color={colors.textFaint}>
             {`atualizado há ${seconds}s`}
           </Txt>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 14, marginTop: 8 }}>
           <Txt variant="display">{active.length}</Txt>
-          <Txt variant="mono" color={delta >= 0 ? colors.success : colors.dangerText} style={{ marginBottom: 12 }}>
+          <Txt variant="caption" color={delta >= 0 ? colors.success : colors.dangerText} style={{ marginBottom: 12 }}>
             {`${delta >= 0 ? '▲' : '▼'} ${Math.abs(delta)} na última hora`}
           </Txt>
         </View>
@@ -141,7 +141,7 @@ export default function LiveScreen() {
             onPress={() => router.push({ pathname: '/conta/[id]', params: { id: topUser.id } })}
           />
         ) : (
-          <Txt variant="mono" color={colors.textMuted}>
+          <Txt variant="caption" color={colors.textMuted}>
             nenhum alerta aberto
           </Txt>
         )}
@@ -163,10 +163,10 @@ export default function LiveScreen() {
                 onPress={() => router.navigate({ pathname: '/alunos', params: { modulo: moduleId } })}
                 style={({ pressed }) => [{ paddingVertical: 11, gap: 8 }, pressed && { opacity: 0.6 }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Txt variant="small" numberOfLines={1} style={{ flex: 1 }}>
+                  <Txt variant="caption" numberOfLines={1} style={{ flex: 1 }}>
                     {MODULE_BY_ID[moduleId]?.name}
                   </Txt>
-                  <Txt variant="mono" color={colors.textMuted}>
+                  <Txt variant="caption" color={colors.textMuted}>
                     {count}
                   </Txt>
                 </View>
@@ -199,7 +199,7 @@ export default function LiveScreen() {
         contentContainerStyle={{ paddingBottom: 24 }}
         initialNumToRender={12}
         ListEmptyComponent={
-          <Txt variant="mono" color={colors.textMuted} style={{ paddingHorizontal: gutter }}>
+          <Txt variant="caption" color={colors.textMuted} style={{ paddingHorizontal: gutter }}>
             nenhuma sessão com esses filtros
           </Txt>
         }
@@ -218,7 +218,7 @@ export default function LiveScreen() {
               <SessionRow
                 user={u}
                 subtitle={subtitle}
-                subtitleColor={idle ? colors.warning : undefined}
+                subtitleColor={idle ? colors.primaryText : undefined}
                 right={
                   isActive(item)
                     ? formatDuration(now - item.startedAt)

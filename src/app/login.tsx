@@ -35,16 +35,16 @@ export default function LoginScreen() {
           contentContainerStyle={{ flexGrow: 1, paddingHorizontal: gutter, paddingTop: 14 }}
           keyboardShouldPersistTaps="handled">
           <View style={{ gap: 6 }}>
-            <Txt variant="label" color={colors.textMuted}>
+            <Txt variant="caption" color={colors.textMuted}>
               Beast Maragames
             </Txt>
             <Txt variant="title">Entrar</Txt>
-            <Txt variant="small" color={colors.textMuted} style={{ marginTop: 2 }}>
+            <Txt variant="caption" color={colors.textMuted} style={{ marginTop: 2 }}>
               Monitor de acessos simultâneos
             </Txt>
           </View>
 
-          <Txt variant="label" color={colors.textMuted} style={{ marginTop: 40, marginBottom: 12 }}>
+          <Txt variant="caption" color={colors.textMuted} style={{ marginTop: 40, marginBottom: 12 }}>
             E-mail
           </Txt>
           <Field
@@ -57,7 +57,7 @@ export default function LoginScreen() {
             textContentType="username"
           />
 
-          <Txt variant="label" color={colors.textMuted} style={{ marginTop: 24, marginBottom: 12 }}>
+          <Txt variant="caption" color={colors.textMuted} style={{ marginTop: 24, marginBottom: 12 }}>
             Senha
           </Txt>
           <Field
@@ -70,7 +70,7 @@ export default function LoginScreen() {
             onSubmitEditing={submit}
           />
 
-          <Txt variant="label" color={colors.textMuted} style={{ marginTop: 24, marginBottom: 12 }}>
+          <Txt variant="caption" color={colors.textMuted} style={{ marginTop: 24, marginBottom: 12 }}>
             Perfil
           </Txt>
           <Segmented<Role>
@@ -83,7 +83,7 @@ export default function LoginScreen() {
           />
 
           {error ? (
-            <Txt variant="mono" color={colors.dangerText} style={{ marginTop: 16 }}>
+            <Txt variant="caption" color={colors.dangerText} style={{ marginTop: 16 }}>
               {error}
             </Txt>
           ) : null}

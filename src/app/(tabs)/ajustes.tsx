@@ -8,7 +8,6 @@ import { useAuth } from '@/data/AuthProvider';
 import { useData } from '@/data/DataProvider';
 import type { Plan } from '@/data/types';
 import { makeStyles, useTheme, type ThemeMode } from '@/theme/ThemeProvider';
-import { fonts } from '@/theme/tokens';
 
 const PLANS: Plan[] = ['Free', 'Premium', 'Empresarial'];
 
@@ -39,7 +38,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   const { colors } = useTheme();
   return (
     <View style={{ marginTop: 26 }}>
-      <Txt variant="label" color={colors.textMuted} style={{ marginBottom: 12 }}>
+      <Txt variant="caption" color={colors.textMuted} style={{ marginBottom: 12 }}>
         {title}
       </Txt>
       {children}
@@ -70,8 +69,8 @@ export default function SettingsScreen() {
         <Card style={s.profile}>
           <Avatar label={(user?.name ?? 'A').slice(0, 2).toUpperCase()} tint="purple" />
           <View style={{ flex: 1, gap: 3 }}>
-            <Txt variant="bodyMedium">{user?.name}</Txt>
-            <Txt variant="monoSmall" color={colors.textMuted} numberOfLines={1}>
+            <Txt variant="bodyStrong">{user?.name}</Txt>
+            <Txt variant="micro" color={colors.textMuted} numberOfLines={1}>
               {user?.email}
             </Txt>
           </View>
@@ -97,8 +96,8 @@ export default function SettingsScreen() {
                 {i > 0 ? <Divider /> : null}
                 <View style={s.row}>
                   <View style={{ flex: 1, gap: 3 }}>
-                    <Txt variant="bodyMedium">{plan}</Txt>
-                    <Txt variant="monoSmall" color={colors.textMuted}>
+                    <Txt variant="bodyStrong">{plan}</Txt>
+                    <Txt variant="micro" color={colors.textMuted}>
                       sessões simultâneas
                     </Txt>
                   </View>
@@ -109,7 +108,7 @@ export default function SettingsScreen() {
                       style={({ pressed }) => [s.stepBtn, (pressed || !canManage) && { opacity: 0.5 }]}>
                       <Minus size={15} color={colors.text} strokeWidth={1.8} />
                     </Pressable>
-                    <Txt variant="bodyMedium" style={s.stepValue}>
+                    <Txt variant="bodyStrong" style={s.stepValue}>
                       {planLimits[plan]}
                     </Txt>
                     <Pressable
@@ -129,8 +128,8 @@ export default function SettingsScreen() {
           <Card>
             <View style={s.row}>
               <View style={{ flex: 1, gap: 3 }}>
-                <Txt variant="bodyMedium">Acesso simultâneo</Txt>
-                <Txt variant="monoSmall" color={colors.textMuted}>
+                <Txt variant="bodyStrong">Acesso simultâneo</Txt>
+                <Txt variant="micro" color={colors.textMuted}>
                   push ao detectar
                 </Txt>
               </View>
@@ -139,8 +138,8 @@ export default function SettingsScreen() {
             <Divider />
             <View style={s.row}>
               <View style={{ flex: 1, gap: 3 }}>
-                <Txt variant="bodyMedium">Bloqueio automático</Txt>
-                <Txt variant="monoSmall" color={colors.textMuted}>
+                <Txt variant="bodyStrong">Bloqueio automático</Txt>
+                <Txt variant="micro" color={colors.textMuted}>
                   ao exceder o limite 3 vezes
                 </Txt>
               </View>
@@ -164,7 +163,7 @@ export default function SettingsScreen() {
                     <Icon size={18} color={colors.textMuted} strokeWidth={1.8} />
                   </Pressable>
                   {open ? (
-                    <Txt variant="small" color={colors.textMuted} style={s.answer}>
+                    <Txt variant="caption" color={colors.textMuted} style={s.answer}>
                       {item.a}
                     </Txt>
                   ) : null}
@@ -176,14 +175,14 @@ export default function SettingsScreen() {
 
         <Card style={{ marginTop: 26 }}>
           <Pressable onPress={signOut} style={s.row}>
-            <Txt variant="bodyMedium" color={colors.dangerText} style={{ flex: 1 }}>
+            <Txt variant="bodyStrong" color={colors.dangerText} style={{ flex: 1 }}>
               Sair
             </Txt>
             <ChevronRight size={18} color={colors.dangerText} strokeWidth={1.8} />
           </Pressable>
         </Card>
 
-        <Txt variant="monoSmall" color={colors.textFaint} style={{ marginTop: 20, textAlign: 'center' }}>
+        <Txt variant="micro" color={colors.textFaint} style={{ marginTop: 20, textAlign: 'center' }}>
           Beast Maragames · v0.1.0
         </Txt>
       </ScrollView>
@@ -227,6 +226,5 @@ const useStyles = makeStyles((c) => ({
   stepValue: {
     width: 30,
     textAlign: 'center',
-    fontFamily: fonts.monoMedium,
   },
 }));

@@ -124,7 +124,7 @@ export default function FiltersSheet() {
             bounces={false}
             contentContainerStyle={{ paddingHorizontal: gutter, paddingBottom: 12 }}>
             <View style={s.titleRow}>
-              <Txt variant="sheetTitle">Filtrar acessos</Txt>
+              <Txt variant="subtitle">Filtrar acessos</Txt>
               <Pressable hitSlop={10} onPress={() => setDraft(DEFAULT_FILTERS)}>
                 <Txt variant="body" color={colors.primaryText}>
                   Limpar
@@ -142,7 +142,7 @@ export default function FiltersSheet() {
               style={{ marginTop: 18 }}
             />
 
-            <Txt variant="label" color={colors.textMuted} style={s.section}>
+            <Txt variant="caption" color={colors.textMuted} style={s.section}>
               Status
             </Txt>
             <View style={s.wrap}>
@@ -156,7 +156,7 @@ export default function FiltersSheet() {
               ))}
             </View>
 
-            <Txt variant="label" color={colors.textMuted} style={s.section}>
+            <Txt variant="caption" color={colors.textMuted} style={s.section}>
               Dispositivo
             </Txt>
             <View style={s.wrap}>
@@ -170,12 +170,12 @@ export default function FiltersSheet() {
               ))}
             </View>
 
-            <Txt variant="label" color={colors.textMuted} style={s.section}>
+            <Txt variant="caption" color={colors.textMuted} style={s.section}>
               Período
             </Txt>
             <Segmented options={PERIODS} value={draft.period} onChange={(period) => setDraft((d) => ({ ...d, period }))} />
 
-            <Txt variant="label" color={colors.textMuted} style={s.section}>
+            <Txt variant="caption" color={colors.textMuted} style={s.section}>
               Localização
             </Txt>
             <Field
@@ -206,7 +206,7 @@ export default function FiltersSheet() {
               </View>
             ) : null}
 
-            <Txt variant="label" color={colors.textMuted} style={s.section}>
+            <Txt variant="caption" color={colors.textMuted} style={s.section}>
               Plano
             </Txt>
             <View style={s.wrap}>
@@ -220,7 +220,7 @@ export default function FiltersSheet() {
               ))}
             </View>
 
-            <Txt variant="label" color={colors.textMuted} style={s.section}>
+            <Txt variant="caption" color={colors.textMuted} style={s.section}>
               Módulo
             </Txt>
             <View style={s.wrap}>

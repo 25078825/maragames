@@ -19,7 +19,7 @@ export function TabHeader({ label, title, right }: { label: string; title: strin
         paddingBottom: 18,
       }}>
       <View style={{ gap: 6 }}>
-        <Txt variant="label" color={colors.textMuted}>
+        <Txt variant="caption" color={colors.textMuted}>
           {label}
         </Txt>
         <Txt variant="title">{title}</Txt>
@@ -48,7 +48,7 @@ export function SectionHeader({
   const color = rightColor ?? colors.textMuted;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-      <Txt variant="h2">{title}</Txt>
+      <Txt variant="heading">{title}</Txt>
       {right ? (
         <Pressable
           onPress={onPressRight}
@@ -56,7 +56,7 @@ export function SectionHeader({
           hitSlop={10}
           style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
           {Icon ? <Icon size={15} color={color} strokeWidth={1.8} /> : null}
-          <Txt variant={rightMono ? 'mono' : 'body'} color={color}>
+          <Txt variant={rightMono ? 'caption' : 'body'} color={color}>
             {right}
           </Txt>
         </Pressable>

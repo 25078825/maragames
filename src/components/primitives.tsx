@@ -1,7 +1,6 @@
 import type { LucideIcon } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import {
-  Platform,
   Pressable,
   Text,
   TextInput,
@@ -9,7 +8,6 @@ import {
   type StyleProp,
   type TextInputProps,
   type TextProps,
-  type TextStyle,
   type ViewStyle,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,25 +15,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { TintName, User } from '@/data/types';
 import { initials } from '@/data/selectors';
 import { makeStyles, useTheme } from '@/theme/ThemeProvider';
-import { fonts, radius, space } from '@/theme/tokens';
+import { fonts, radius, space, type } from '@/theme/tokens';
 
 /* ---------- Texto ---------- */
 
-const textVariants = {
-  display: { fontFamily: fonts.sansBold, fontSize: 56, lineHeight: 64, letterSpacing: -2.5 },
-  title: { fontFamily: fonts.sansSemiBold, fontSize: 28, lineHeight: 34, letterSpacing: -0.6 },
-  name: { fontFamily: fonts.sansSemiBold, fontSize: 22, lineHeight: 28, letterSpacing: -0.4 },
-  sheetTitle: { fontFamily: fonts.sansSemiBold, fontSize: 20, lineHeight: 26, letterSpacing: -0.3 },
-  stat: { fontFamily: fonts.sansSemiBold, fontSize: 22, lineHeight: 28, letterSpacing: -0.5 },
-  h2: { fontFamily: fonts.sansMedium, fontSize: 16, lineHeight: 22 },
-  bodyMedium: { fontFamily: fonts.sansMedium, fontSize: 15, lineHeight: 20 },
-  body: { fontFamily: fonts.sans, fontSize: 14, lineHeight: 20 },
-  small: { fontFamily: fonts.sans, fontSize: 13, lineHeight: 18 },
-  tab: { fontFamily: fonts.sans, fontSize: 11.5, lineHeight: 14 },
-  mono: { fontFamily: fonts.mono, fontSize: 12, lineHeight: 17 },
-  monoSmall: { fontFamily: fonts.mono, fontSize: 11, lineHeight: 15 },
-  label: { fontFamily: fonts.mono, fontSize: 11, lineHeight: 14, letterSpacing: 2.2, textTransform: 'uppercase' },
-} satisfies Record<string, TextStyle>;
+const textVariants = type;
 
 export type TextVariant = keyof typeof textVariants;
 
@@ -78,7 +62,7 @@ export function Avatar({
   size?: number;
 }) {
   const { colors } = useTheme();
-  const t = colors.tints[tint ?? user?.tint ?? 'purple'];
+  const t = colors.tints[tint ?? 'neutral'];
   const large = size >= 50;
   return (
     <View
@@ -93,9 +77,8 @@ export function Avatar({
       <Text
         style={{
           color: t.fg,
-          fontFamily: large ? fonts.sansSemiBold : fonts.monoMedium,
+          fontFamily: fonts.semibold,
           fontSize: large ? 20 : 13,
-          letterSpacing: large ? 0 : 0.5,
         }}>
         {label ?? (user ? initials(user) : '')}
       </Text>
@@ -142,7 +125,7 @@ export function Chip({
       onPress={onPress}
       disabled={!onPress}
       style={({ pressed }) => [s.chip, toneStyle, selected && s.chipSelected, pressed && { opacity: 0.7 }]}>
-      <Txt variant="small" color={textColor} style={{ fontSize: 12.5 }}>
+      <Txt variant="caption" color={textColor}>
         {label}
       </Txt>
       {right}
@@ -171,7 +154,6 @@ export function Button({
   const { colors } = useTheme();
   const bg = variant === 'primary' ? colors.primary : variant === 'danger' ? colors.danger : 'transparent';
   const fg = variant === 'primary' ? colors.onPrimary : variant === 'danger' ? colors.onDanger : colors.text;
-  const glow = variant === 'primary' && size === 'lg' && !disabled ? s.glow : null;
   return (
     <Pressable
       onPress={onPress}
@@ -180,7 +162,6 @@ export function Button({
         size === 'lg' ? s.btnLg : s.btnSm,
         { backgroundColor: bg },
         variant === 'outline' && s.btnOutline,
-        glow,
         (pressed || disabled) && { opacity: disabled ? 0.4 : 0.8 },
         style,
       ]}>
@@ -188,8 +169,8 @@ export function Button({
         numberOfLines={1}
         style={{
           color: fg,
-          fontFamily: fonts.sansMedium,
-          fontSize: size === 'lg' ? 16 : 13,
+          ...(size === 'lg' ? type.bodyStrong : type.caption),
+          fontFamily: fonts.medium,
         }}>
         {label}
       </Text>
@@ -338,11 +319,6 @@ const useStyles = makeStyles((c) => ({
     borderWidth: 1,
     borderColor: c.border,
   },
-  glow: Platform.select({
-    ios: { shadowColor: c.primary, shadowOpacity: 0.45, shadowRadius: 14, shadowOffset: { width: 0, height: 4 } },
-    android: { elevation: 8, shadowColor: c.primary },
-    default: { boxShadow: `0 6px 22px ${c.primary}66` },
-  }),
   iconBtn: {
     borderRadius: 12,
     borderWidth: 1,
@@ -396,8 +372,8 @@ const useStyles = makeStyles((c) => ({
     flex: 1,
     height: '100%',
     color: c.text,
-    fontFamily: fonts.sans,
-    fontSize: 14,
+    fontFamily: fonts.regular,
+    fontSize: 15,
     paddingVertical: 0,
   },
 }));

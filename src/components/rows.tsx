@@ -15,10 +15,10 @@ export function StatTile({ value, label, danger }: { value: string; label: strin
   const { colors } = useTheme();
   return (
     <Card style={{ flex: 1, paddingHorizontal: 14, paddingVertical: 13, gap: 4 }}>
-      <Txt variant="stat" color={danger ? colors.dangerText : colors.text}>
+      <Txt variant="subtitle" color={danger ? colors.dangerText : colors.text}>
         {value}
       </Txt>
-      <Txt variant="small" color={colors.textMuted}>
+      <Txt variant="caption" color={colors.textMuted}>
         {label}
       </Txt>
     </Card>
@@ -50,14 +50,14 @@ export function SessionRow({
     <Pressable onPress={onPress} style={({ pressed }) => [s.row, !last && s.rowDivider, pressed && { opacity: 0.6 }]}>
       <Avatar user={user} tint={danger ? 'red' : undefined} />
       <View style={{ flex: 1, gap: 3 }}>
-        <Txt variant="bodyMedium" numberOfLines={1}>
+        <Txt variant="bodyStrong" numberOfLines={1}>
           {user.handle}
         </Txt>
-        <Txt variant="monoSmall" color={subtitleColor ?? colors.textMuted} numberOfLines={1}>
+        <Txt variant="micro" color={subtitleColor ?? colors.textMuted} numberOfLines={1}>
           {subtitle}
         </Txt>
       </View>
-      <Txt variant="mono" color={colors.textMuted}>
+      <Txt variant="caption" color={colors.textMuted}>
         {right}
       </Txt>
     </Pressable>
@@ -83,11 +83,11 @@ export function AttentionCard({
     <Pressable onPress={onPress} style={({ pressed }) => [s.attention, pressed && { opacity: 0.8 }]}>
       <Avatar user={user} tint="red" />
       <View style={{ flex: 1, gap: 3 }}>
-        <Txt variant="bodyMedium">{user.handle}</Txt>
-        <Txt variant="small" numberOfLines={1}>
+        <Txt variant="bodyStrong">{user.handle}</Txt>
+        <Txt variant="caption" numberOfLines={1}>
           {line}
         </Txt>
-        <Txt variant="monoSmall" color={colors.textMuted} numberOfLines={1}>
+        <Txt variant="micro" color={colors.textMuted} numberOfLines={1}>
           {meta}
         </Txt>
       </View>
@@ -119,27 +119,27 @@ export function SessionCard({
           <Icon size={16} color={colors.text} strokeWidth={1.6} />
         </View>
         <View style={{ flex: 1, gap: 3 }}>
-          <Txt variant="bodyMedium" numberOfLines={1}>
+          <Txt variant="bodyStrong" numberOfLines={1}>
             {session.title}
           </Txt>
-          <Txt variant="monoSmall" color={colors.textMuted} numberOfLines={1}>
+          <Txt variant="micro" color={colors.textMuted} numberOfLines={1}>
             {`${session.ip} · ${session.city}, ${session.uf}`}
           </Txt>
         </View>
       </View>
       {activity ? (
         <View style={[s.activity, activity.idle && s.activityIdle]}>
-          <Txt variant="small" numberOfLines={1}>
+          <Txt variant="caption" numberOfLines={1}>
             {activity.line}
           </Txt>
-          <Txt variant="monoSmall" color={activity.idle ? colors.warning : colors.textMuted} numberOfLines={1}>
+          <Txt variant="micro" color={activity.idle ? colors.primaryText : colors.textMuted} numberOfLines={1}>
             {activity.meta}
           </Txt>
         </View>
       ) : null}
       <Divider style={{ marginTop: 14, marginBottom: 10 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Txt variant="monoSmall" color={colors.textFaint}>
+        <Txt variant="micro" color={colors.textFaint}>
           {since}
         </Txt>
         {action}
@@ -155,13 +155,13 @@ export function alertMeta(kind: AlertItem['kind'], colors: ReturnType<typeof use
     case 'simultaneo':
       return { label: 'Alta · Simultâneo', color: colors.dangerText, bar: colors.danger };
     case 'limite':
-      return { label: 'Média · Limite do plano', color: colors.warning, bar: colors.warning };
+      return { label: 'Média · Limite do plano', color: colors.dangerText, bar: colors.danger };
     case 'bloqueio':
       return { label: 'Bloqueio automático', color: colors.primaryText, bar: colors.primary };
     case 'novoDispositivo':
       return { label: 'Baixa · Novo dispositivo', color: colors.textMuted, bar: colors.neutralBar };
     case 'parado':
-      return { label: 'Média · Aluno parado', color: colors.warning, bar: colors.warning };
+      return { label: 'Média · Aluno parado', color: colors.primaryText, bar: colors.primary };
   }
 }
 
@@ -185,17 +185,17 @@ export function AlertCard({
       <Card style={s.alertCard}>
         <View style={[s.alertBar, { backgroundColor: resolved ? colors.neutralBar : meta.bar }]} />
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Txt variant="label" color={resolved ? colors.textMuted : meta.color} style={{ letterSpacing: 1.8 }}>
+          <Txt variant="caption" color={resolved ? colors.textMuted : meta.color}>
             {meta.label}
           </Txt>
-          <Txt variant="monoSmall" color={colors.textFaint}>
+          <Txt variant="micro" color={colors.textFaint}>
             {resolved ? `resolvido há ${formatAgo(now - (alert.resolvedAt ?? now))}` : formatAgo(now - alert.createdAt)}
           </Txt>
         </View>
-        <Txt variant="h2" style={{ marginTop: 10 }}>
+        <Txt variant="heading" style={{ marginTop: 10 }}>
           {alert.title}
         </Txt>
-        <Txt variant="small" color={colors.textMuted} style={{ marginTop: 3 }}>
+        <Txt variant="caption" color={colors.textMuted} style={{ marginTop: 3 }}>
           {alert.detail}
         </Txt>
         {actions ? <View style={{ flexDirection: 'row', gap: 8, marginTop: 14 }}>{actions}</View> : null}
@@ -244,7 +244,7 @@ const useStyles = makeStyles((c) => ({
   },
   activityIdle: {
     borderWidth: 1,
-    borderColor: c.warning,
+    borderColor: c.primary,
   },
   alertCard: {
     paddingVertical: 16,

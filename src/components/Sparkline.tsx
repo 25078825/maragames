@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import Svg, { Circle, Defs, LinearGradient, Path, Stop } from 'react-native-svg';
+import Svg, { Circle, Path } from 'react-native-svg';
 
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -38,21 +38,12 @@ export function Sparkline({ data, height = 84 }: { data: number[]; height?: numb
   ]);
   const line = smoothPath(points);
   const last = points[points.length - 1];
-  const area = line ? `${line} L ${last[0]} ${height} L 0 ${height} Z` : '';
 
   return (
     <View style={{ height }} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
       {width > 0 ? (
         <Svg width={width} height={height}>
-          <Defs>
-            <LinearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
-              <Stop offset="0" stopColor={colors.chartFillTop} stopOpacity={0.42} />
-              <Stop offset="1" stopColor={colors.chartFillTop} stopOpacity={0.04} />
-            </LinearGradient>
-          </Defs>
-          <Path d={area} fill="url(#sparkFill)" />
           <Path d={line} stroke={colors.chartLine} strokeWidth={2} fill="none" strokeLinejoin="round" />
-          <Circle cx={last[0]} cy={last[1]} r={7} fill={colors.chartLine} opacity={0.25} />
           <Circle cx={last[0]} cy={last[1]} r={4} fill={colors.chartLine} />
         </Svg>
       ) : null}

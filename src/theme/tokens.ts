@@ -18,20 +18,14 @@ export type Colors = {
   dangerText: string;
   dangerBg: string;
   dangerBorder: string;
-  warning: string;
   success: string;
   neutralBar: string;
   backdrop: string;
   chartLine: string;
-  chartFillTop: string;
-  cardGlow: string;
   tints: {
-    blue: Tint;
-    olive: Tint;
-    green: Tint;
+    neutral: Tint;
     red: Tint;
     purple: Tint;
-    teal: Tint;
   };
 };
 
@@ -55,20 +49,14 @@ export const darkColors: Colors = {
   dangerText: '#F2726E',
   dangerBg: '#22141A',
   dangerBorder: '#57282B',
-  warning: '#E3A548',
   success: '#5BD68A',
   neutralBar: '#4A4356',
   backdrop: 'rgba(5, 3, 9, 0.72)',
   chartLine: '#9B7BFF',
-  chartFillTop: '#7C4DFF',
-  cardGlow: '#1E1730',
   tints: {
-    blue: { bg: '#1D2740', fg: '#8DAEF2' },
-    olive: { bg: '#2C2915', fg: '#D8C46B' },
-    green: { bg: '#14301F', fg: '#6FD69A' },
+    neutral: { bg: '#221C2C', fg: '#D9D4E2' },
     red: { bg: '#3A1B1D', fg: '#F2726E' },
     purple: { bg: '#2A2140', fg: '#B49CFF' },
-    teal: { bg: '#132D2E', fg: '#6CCFCB' },
   },
 };
 
@@ -90,31 +78,39 @@ export const lightColors: Colors = {
   dangerText: '#C93C39',
   dangerBg: '#FDF2F1',
   dangerBorder: '#F2CAC8',
-  warning: '#B7791F',
   success: '#1F9D55',
   neutralBar: '#C9C3D3',
   backdrop: 'rgba(22, 18, 30, 0.45)',
   chartLine: '#6A3DE8',
-  chartFillTop: '#6A3DE8',
-  cardGlow: '#F3EFFE',
   tints: {
-    blue: { bg: '#E6EEFC', fg: '#2F5BB7' },
-    olive: { bg: '#F6F0D6', fg: '#866F12' },
-    green: { bg: '#E2F5EA', fg: '#1D7F48' },
+    neutral: { bg: '#EEECF2', fg: '#3D3747' },
     red: { bg: '#FCE7E6', fg: '#C93C39' },
     purple: { bg: '#EEE8FD', fg: '#5A2FD6' },
-    teal: { bg: '#E0F3F2', fg: '#1F7A76' },
   },
 };
 
 export const fonts = {
-  sans: 'Sora_400Regular',
-  sansMedium: 'Sora_500Medium',
-  sansSemiBold: 'Sora_600SemiBold',
-  sansBold: 'Sora_700Bold',
-  mono: 'JetBrainsMono_400Regular',
-  monoMedium: 'JetBrainsMono_500Medium',
+  regular: 'Sora_400Regular',
+  medium: 'Sora_500Medium',
+  semibold: 'Sora_600SemiBold',
 };
+
+/**
+ * Escala tipográfica única do app (fonte Sora).
+ * display: número principal · title: título da tela · subtitle: nome / título de painel
+ * heading: título de seção e de card · body / bodyStrong: texto e nomes em lista
+ * caption: texto secundário · micro: metadados e rótulos da tab bar
+ */
+export const type = {
+  display: { fontFamily: fonts.semibold, fontSize: 44, lineHeight: 52, letterSpacing: -1 },
+  title: { fontFamily: fonts.semibold, fontSize: 26, lineHeight: 32, letterSpacing: -0.4 },
+  subtitle: { fontFamily: fonts.semibold, fontSize: 20, lineHeight: 26 },
+  heading: { fontFamily: fonts.semibold, fontSize: 16, lineHeight: 22 },
+  body: { fontFamily: fonts.regular, fontSize: 15, lineHeight: 21 },
+  bodyStrong: { fontFamily: fonts.medium, fontSize: 15, lineHeight: 21 },
+  caption: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 18 },
+  micro: { fontFamily: fonts.regular, fontSize: 12, lineHeight: 16 },
+} as const;
 
 export const radius = {
   sm: 8,

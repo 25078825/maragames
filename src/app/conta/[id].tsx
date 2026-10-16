@@ -13,7 +13,7 @@ import type { Session } from '@/data/types';
 import { useNow } from '@/data/useNow';
 import { MIN } from '@/data/mock';
 import { makeStyles, useTheme } from '@/theme/ThemeProvider';
-import { fonts } from '@/theme/tokens';
+import { fonts, type } from '@/theme/tokens';
 
 export default function AccountScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -31,7 +31,7 @@ export default function AccountScreen() {
         <View style={s.topBar}>
           <IconButton icon={ChevronLeft} onPress={() => router.back()} />
         </View>
-        <Txt variant="mono" color={colors.textMuted} style={{ paddingHorizontal: gutter }}>
+        <Txt variant="caption" color={colors.textMuted} style={{ paddingHorizontal: gutter }}>
           conta não encontrada
         </Txt>
       </Screen>
@@ -110,18 +110,18 @@ export default function AccountScreen() {
     <Screen>
       <View style={s.topBar}>
         <IconButton icon={ChevronLeft} onPress={() => router.back()} />
-        <Txt variant="h2">Detalhes da conta</Txt>
+        <Txt variant="heading">Detalhes da conta</Txt>
         <IconButton icon={Ellipsis} onPress={openMenu} />
       </View>
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: gutter, paddingBottom: 24 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 8 }}>
-          <Avatar user={user} size={60} />
+          <Avatar user={user} size={60} tint="purple" />
           <View style={{ flex: 1, gap: 4 }}>
-            <Txt variant="name" numberOfLines={1}>
+            <Txt variant="subtitle" numberOfLines={1}>
               {user.name}
             </Txt>
-            <Txt variant="mono" color={colors.textMuted} numberOfLines={1}>
+            <Txt variant="caption" color={colors.textMuted} numberOfLines={1}>
               {user.email}
             </Txt>
           </View>
@@ -141,15 +141,15 @@ export default function AccountScreen() {
           <View style={s.warning}>
             <TriangleAlert size={18} color={colors.dangerText} strokeWidth={1.8} style={{ marginTop: 1 }} />
             <Text style={s.warningText}>
-              <Text style={{ fontFamily: fonts.sansSemiBold }}>{warningTitle}</Text>
+              <Text style={{ fontFamily: fonts.semibold }}>{warningTitle}</Text>
               {warningText}
             </Text>
           </View>
         ) : null}
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 28, marginBottom: 12 }}>
-          <Txt variant="h2">Sessões ativas</Txt>
-          <Txt variant="mono" color={colors.textMuted}>
+          <Txt variant="heading">Sessões ativas</Txt>
+          <Txt variant="caption" color={colors.textMuted}>
             {sessions.length}
           </Txt>
         </View>
@@ -174,13 +174,13 @@ export default function AccountScreen() {
             />
           ))}
           {sessions.length === 0 ? (
-            <Txt variant="mono" color={colors.textMuted}>
+            <Txt variant="caption" color={colors.textMuted}>
               nenhuma sessão ativa
             </Txt>
           ) : null}
         </View>
 
-        <Txt variant="h2" style={{ marginTop: 28, marginBottom: 12 }}>
+        <Txt variant="heading" style={{ marginTop: 28, marginBottom: 12 }}>
           Progresso
         </Txt>
         <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -194,10 +194,10 @@ export default function AccountScreen() {
               {i > 0 ? <Divider /> : null}
               <View style={{ paddingVertical: 11, gap: 8 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
-                  <Txt variant="small" numberOfLines={1} style={{ flex: 1 }}>
+                  <Txt variant="caption" numberOfLines={1} style={{ flex: 1 }}>
                     {module.name}
                   </Txt>
-                  <Txt variant="mono" color={done >= module.lessons ? colors.success : colors.textMuted}>
+                  <Txt variant="caption" color={done >= module.lessons ? colors.success : colors.textMuted}>
                     {`${Math.min(done, module.lessons)}/${module.lessons}`}
                   </Txt>
                 </View>
@@ -211,7 +211,7 @@ export default function AccountScreen() {
           ))}
         </Card>
 
-        <Txt variant="h2" style={{ marginTop: 28, marginBottom: 12 }}>
+        <Txt variant="heading" style={{ marginTop: 28, marginBottom: 12 }}>
           Linha do tempo
         </Txt>
         <Card style={{ paddingHorizontal: 16, paddingVertical: 4 }}>
@@ -219,18 +219,18 @@ export default function AccountScreen() {
             <View key={e.id}>
               {i > 0 ? <Divider /> : null}
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 11 }}>
-                <Txt variant="monoSmall" color={colors.textFaint} style={{ width: 40 }}>
+                <Txt variant="micro" color={colors.textFaint} style={{ width: 40 }}>
                   {formatClock(e.at)}
                 </Txt>
                 <Txt
-                  variant="small"
+                  variant="caption"
                   color={e.kind === 'quizErro' ? colors.textMuted : colors.text}
                   style={{ flex: 1 }}
                   numberOfLines={2}>
                   {e.text}
                 </Txt>
                 {e.xp ? (
-                  <Txt variant="monoSmall" color={colors.success}>
+                  <Txt variant="micro" color={colors.success}>
                     {`+${e.xp} XP`}
                   </Txt>
                 ) : null}
@@ -238,7 +238,7 @@ export default function AccountScreen() {
             </View>
           ))}
           {user.timeline.length === 0 ? (
-            <Txt variant="mono" color={colors.textMuted} style={{ paddingVertical: 12 }}>
+            <Txt variant="caption" color={colors.textMuted} style={{ paddingVertical: 12 }}>
               sem eventos recentes
             </Txt>
           ) : null}
@@ -287,9 +287,7 @@ const useStyles = makeStyles((c) => ({
   warningText: {
     flex: 1,
     color: c.text,
-    fontFamily: fonts.sans,
-    fontSize: 14,
-    lineHeight: 21,
+    ...type.body,
   },
   footer: {
     flexDirection: 'row',

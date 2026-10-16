@@ -1,5 +1,4 @@
-import { JetBrainsMono_400Regular, JetBrainsMono_500Medium } from '@expo-google-fonts/jetbrains-mono';
-import { Sora_400Regular, Sora_500Medium, Sora_600SemiBold, Sora_700Bold } from '@expo-google-fonts/sora';
+import { Sora_400Regular, Sora_500Medium, Sora_600SemiBold } from '@expo-google-fonts/sora';
 import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider as NavThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -50,9 +49,6 @@ export default function RootLayout() {
     Sora_400Regular,
     Sora_500Medium,
     Sora_600SemiBold,
-    Sora_700Bold,
-    JetBrainsMono_400Regular,
-    JetBrainsMono_500Medium,
   });
 
   useEffect(() => {
