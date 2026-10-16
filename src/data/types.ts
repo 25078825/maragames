@@ -12,6 +12,44 @@ export type User = {
   plan: Plan;
   blocked: boolean;
   tint: TintName;
+  /** lições concluídas por módulo */
+  progress: Record<string, number>;
+  currentModuleId: string;
+  xp: number;
+  streak: number;
+  timeline: TimelineEvent[];
+};
+
+export type Module = {
+  id: string;
+  n: number;
+  name: string;
+  short: string;
+  lessons: number;
+  premium?: boolean;
+};
+
+export type ActivityKind = 'licao' | 'quiz' | 'forca' | 'relogio' | 'tutorial';
+
+export type Activity = {
+  moduleId: string;
+  lesson: number;
+  kind: ActivityKind;
+  since: number;
+  lastActionAt: number;
+  /** sessão aberta, mas o aluno parou de interagir */
+  stalled?: boolean;
+  idleAlerted?: boolean;
+};
+
+export type TimelineKind = 'licao' | 'quizErro' | 'jogo' | 'modulo' | 'conquista' | 'login' | 'retomou';
+
+export type TimelineEvent = {
+  id: string;
+  at: number;
+  kind: TimelineKind;
+  text: string;
+  xp?: number;
 };
 
 export type Session = {
@@ -28,9 +66,10 @@ export type Session = {
   uf: string;
   startedAt: number;
   endedAt?: number;
+  activity?: Activity;
 };
 
-export type AlertKind = 'simultaneo' | 'limite' | 'bloqueio' | 'novoDispositivo';
+export type AlertKind = 'simultaneo' | 'limite' | 'bloqueio' | 'novoDispositivo' | 'parado';
 
 export type AlertItem = {
   id: string;
@@ -52,6 +91,7 @@ export type Filters = {
   period: PeriodFilter;
   locations: string[];
   plans: Plan[];
+  modules: string[];
 };
 
 export type PlanLimits = Record<Plan, number>;

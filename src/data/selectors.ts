@@ -8,6 +8,7 @@ export const DEFAULT_FILTERS: Filters = {
   period: 'hoje',
   locations: [],
   plans: [],
+  modules: [],
 };
 
 export function isActive(s: Session) {
@@ -89,6 +90,7 @@ export function applyFilters(
     if (filters.locations.length && !filters.locations.some((l) => matchesLocation(s, l))) return false;
     const user = users[s.userId];
     if (filters.plans.length && (!user || !filters.plans.includes(user.plan))) return false;
+    if (filters.modules.length && (!s.activity || !filters.modules.includes(s.activity.moduleId))) return false;
     if (q) {
       const hay = `${user?.handle ?? ''} ${user?.email ?? ''} ${s.ip}`.toLowerCase();
       if (!hay.includes(q)) return false;
@@ -105,6 +107,7 @@ export function activeFilterCount(f: Filters) {
   if (f.period !== DEFAULT_FILTERS.period) n++;
   if (f.locations.length) n++;
   if (f.plans.length) n++;
+  if (f.modules.length) n++;
   return n;
 }
 

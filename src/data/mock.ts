@@ -1,4 +1,16 @@
-import type { AlertItem, OsFamily, Plan, PlanLimits, Session, TintName, User } from './types';
+import { MODULE_BY_ID, MODULE_WEIGHT, MODULES } from './modules';
+import type {
+  Activity,
+  ActivityKind,
+  AlertItem,
+  OsFamily,
+  Plan,
+  PlanLimits,
+  Session,
+  TimelineEvent,
+  TintName,
+  User,
+} from './types';
 
 export const MIN = 60_000;
 export const HOUR = 60 * MIN;
@@ -110,6 +122,93 @@ export function nextAlertId() {
   return `a${alertSeq}`;
 }
 
+let eventSeq = 0;
+export function nextEventId() {
+  eventSeq += 1;
+  return `e${eventSeq}`;
+}
+
+const TIMELINE_MAX = 25;
+
+export function pushEvent(user: User, event: Omit<TimelineEvent, 'id'>): User {
+  const timeline = [{ ...event, id: nextEventId() }, ...user.timeline].slice(0, TIMELINE_MAX);
+  return { ...user, timeline };
+}
+
+export function pickModule(rng: Rng, plan: Plan, exclude: string[] = []) {
+  const options = MODULES.filter((m) => (plan !== 'Free' || !m.premium) && !exclude.includes(m.id));
+  return pickWeighted(
+    rng,
+    options.map((m) => ({ id: m.id, weight: MODULE_WEIGHT[m.id] ?? 1 })),
+  ).id;
+}
+
+function seedProgress(rng: Rng, user: User) {
+  const count = 1 + Math.floor(rng() * 4);
+  const chosen: string[] = [];
+  for (let i = 0; i < count; i++) chosen.push(pickModule(rng, user.plan, chosen));
+  const progress: Record<string, number> = {};
+  chosen.forEach((id, i) => {
+    const total = MODULE_BY_ID[id].lessons;
+    progress[id] = i < chosen.length - 1 && rng() < 0.6 ? total : 1 + Math.floor(rng() * (total - 2));
+  });
+  user.progress = progress;
+  user.currentModuleId = chosen[chosen.length - 1];
+  user.xp = Object.values(progress).reduce((sum, n) => sum + n * 30, 0) + Math.floor(rng() * 20) * 10;
+  user.streak = Math.floor(Math.pow(rng(), 2) * 45);
+}
+
+function pickKind(rng: Rng, moduleId: string): ActivityKind {
+  if ((moduleId === 'godot' || moduleId === 'construct') && rng() < 0.6) return 'tutorial';
+  const r = rng();
+  return r < 0.48 ? 'licao' : r < 0.82 ? 'quiz' : r < 0.92 ? 'forca' : 'relogio';
+}
+
+export function makeActivity(rng: Rng, user: User, now: number, startedAt: number): Activity {
+  const moduleId = user.currentModuleId;
+  const total = MODULE_BY_ID[moduleId]?.lessons ?? 20;
+  const lesson = Math.min(total, (user.progress[moduleId] ?? 0) + 1);
+  const since = Math.max(startedAt, now - Math.floor(rng() * 9 * MIN));
+  const lastActionAt = Math.max(since, now - Math.floor(rng() * 4 * MIN));
+  return { moduleId, lesson, kind: pickKind(rng, moduleId), since, lastActionAt };
+}
+
+function seedTimeline(rng: Rng, user: User, session: Session, now: number) {
+  const events: TimelineEvent[] = [];
+  const m = MODULE_BY_ID[user.currentModuleId];
+  events.push({
+    id: nextEventId(),
+    at: session.startedAt,
+    kind: 'login',
+    text: `Entrou pelo ${session.title.split(' · ')[0]} · ${session.city}`,
+  });
+  const done = user.progress[user.currentModuleId] ?? 0;
+  const span = now - session.startedAt;
+  const steps = Math.min(done, 1 + Math.floor(rng() * 4));
+  for (let i = steps; i >= 1; i--) {
+    const at = session.startedAt + span * ((steps - i + 1) / (steps + 1));
+    if (rng() < 0.2) {
+      events.push({ id: nextEventId(), at, kind: 'quizErro', text: `Errou o quiz da Lição ${done - i + 1}` });
+    }
+    events.push({
+      id: nextEventId(),
+      at: at + 40_000,
+      kind: 'licao',
+      text: `Concluiu a Lição ${done - i + 1} de ${m.short}`,
+      xp: 30,
+    });
+  }
+  if (user.streak >= 7 && rng() < 0.4) {
+    events.push({
+      id: nextEventId(),
+      at: session.startedAt + 60_000,
+      kind: 'conquista',
+      text: `Conquista: ${user.streak} dias seguidos`,
+    });
+  }
+  user.timeline = events.sort((a, b) => b.at - a.at);
+}
+
 export function randomSession(
   rng: Rng,
   userId: string,
@@ -147,6 +246,11 @@ function makeUser(id: string, first: string, last: string, plan: Plan, tint: Tin
     plan,
     blocked: false,
     tint,
+    progress: { 'game-design': 1 },
+    currentModuleId: 'game-design',
+    xp: 0,
+    streak: 0,
+    timeline: [],
   };
 }
 
@@ -205,6 +309,51 @@ export function createSeed(now: number): Seed {
   s(maria.id, 41, 0, '186.215.3.60', 'Bacabal', 'MA');
   s(maria.id, 60, 13, '186.215.3.61', 'Bacabal', 'MA');
 
+  // Progresso e atividade das contas do mockup
+  const ago = (m: number) => now - m * MIN;
+  lucas.progress = { arte: 11, programacao: 2, curiosidades: 7 };
+  lucas.currentModuleId = 'arte';
+  lucas.xp = 1240;
+  lucas.streak = 9;
+  ana.progress = { programacao: 6, 'game-design': 20, godot: 3 };
+  ana.currentModuleId = 'programacao';
+  ana.xp = 2310;
+  ana.streak = 21;
+  joao.progress = { engines: 14, 'game-design': 20 };
+  joao.currentModuleId = 'engines';
+  joao.xp = 1530;
+  joao.streak = 4;
+  maria.progress = { 'game-design': 4, godot: 8 };
+  maria.currentModuleId = 'game-design';
+  maria.xp = 860;
+  maria.streak = 12;
+  const featuredActivity: Activity[] = [
+    { moduleId: 'arte', lesson: 12, kind: 'quiz', since: ago(3), lastActionAt: ago(0.5) },
+    { moduleId: 'programacao', lesson: 3, kind: 'licao', since: ago(6), lastActionAt: ago(1) },
+    { moduleId: 'curiosidades', lesson: 8, kind: 'forca', since: ago(2), lastActionAt: ago(0.3) },
+    { moduleId: 'programacao', lesson: 7, kind: 'quiz', since: ago(4), lastActionAt: ago(0.4) },
+    { moduleId: 'godot', lesson: 4, kind: 'tutorial', since: ago(11), lastActionAt: ago(2) },
+    { moduleId: 'programacao', lesson: 7, kind: 'licao', since: ago(9), lastActionAt: ago(3) },
+    { moduleId: 'engines', lesson: 15, kind: 'licao', since: ago(5), lastActionAt: ago(1.2) },
+    { moduleId: 'game-design', lesson: 5, kind: 'quiz', since: ago(2), lastActionAt: ago(0.8) },
+    { moduleId: 'godot', lesson: 9, kind: 'tutorial', since: ago(31), lastActionAt: ago(22), stalled: true, idleAlerted: true },
+  ];
+  sessions.forEach((session, i) => {
+    session.activity = featuredActivity[i];
+  });
+  for (const u of [lucas, ana, joao, maria]) {
+    const own = sessions.filter((x) => x.userId === u.id).sort((a, b) => a.startedAt - b.startedAt);
+    seedTimeline(rng, u, own[0], now);
+  }
+  lucas.timeline = [
+    { id: nextEventId(), at: ago(3.5), kind: 'licao', text: 'Concluiu a Lição 11 de Pixel Art', xp: 30 },
+    { id: nextEventId(), at: ago(6), kind: 'licao', text: 'Começou a Lição 3 de Programação' },
+    { id: nextEventId(), at: ago(9), kind: 'jogo', text: 'Venceu o jogo da forca', xp: 15 },
+    { id: nextEventId(), at: ago(41.5), kind: 'login', text: 'Entrou pelo iPhone 13 · Teresina' },
+    { id: nextEventId(), at: ago(41.5), kind: 'login', text: 'Entrou pelo Windows 11 · Imperatriz' },
+    { id: nextEventId(), at: ago(50), kind: 'login', text: 'Entrou pelo Galaxy A54 · São Luís' },
+  ];
+
   // Demais alunos
   const genericIds: string[] = [];
   let n = 0;
@@ -216,6 +365,7 @@ export function createSeed(now: number): Seed {
       const r = rng();
       const plan: Plan = r < 0.6 ? 'Free' : r < 0.92 ? 'Premium' : 'Empresarial';
       const u = add(makeUser(`u${n}`, first, last, plan, TINTS[n % TINTS.length]));
+      seedProgress(rng, u);
       genericIds.push(u.id);
     }
   }
@@ -225,7 +375,19 @@ export function createSeed(now: number): Seed {
   const activeNeeded = ACTIVE_TARGET - sessions.length;
   for (let i = 0; i < activeNeeded; i++) {
     const minutesAgo = 43 + Math.floor(rng() * 6 * 60);
-    sessions.push(randomSession(rng, shuffled[i], now - minutesAgo * MIN));
+    const user = users[shuffled[i]];
+    const session = randomSession(rng, user.id, now - minutesAgo * MIN);
+    session.activity = makeActivity(rng, user, now, session.startedAt);
+    seedTimeline(rng, user, session, now);
+    // alguns alunos pararam de interagir; três estão quase no limite e geram alerta logo
+    if (i % 41 === 7) {
+      const idleFor = (16 + Math.floor(rng() * 25)) * MIN;
+      session.activity = { ...session.activity, lastActionAt: now - idleFor, stalled: true, idleAlerted: true };
+    } else if (i === 20 || i === 60 || i === 110) {
+      const idleFor = (13.6 + rng()) * MIN;
+      session.activity = { ...session.activity, lastActionAt: now - idleFor, stalled: true };
+    }
+    sessions.push(session);
   }
 
   // Histórico: sessões encerradas nos últimos 30 dias
@@ -291,6 +453,7 @@ export function createSeed(now: number): Seed {
       limite: [`${u.handle} com 2 de 1 sessões`, `Plano ${u.plan} · mesma cidade`],
       novoDispositivo: [`${u.handle} entrou por um macOS`, 'Primeiro acesso por este sistema.'],
       bloqueio: [`${u.handle} foi bloqueado`, 'Excedeu o limite 3 vezes hoje.'],
+      parado: [`${u.handle} parado há 15 min`, 'Sem interação na lição atual.'],
     };
     alerts.push({
       id: nextAlertId(),
