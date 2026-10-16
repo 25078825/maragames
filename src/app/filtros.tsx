@@ -233,13 +233,13 @@ export default function FiltersSheet() {
                 />
               ))}
             </View>
-
+          </ScrollView>
+          <View style={{ paddingHorizontal: gutter, paddingTop: 12 }}>
             <Button
               label={`Mostrar ${count} ${count === 1 ? 'sessão' : 'sessões'}`}
               onPress={() => close(() => setFilters(draft))}
-              style={{ marginTop: 28, marginBottom: 4 }}
             />
-          </ScrollView>
+          </View>
         </Animated.View>
       </KeyboardAvoidingView>
     </View>
