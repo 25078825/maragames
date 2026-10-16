@@ -9,8 +9,6 @@ import { radius } from '@/theme/tokens';
 
 import { Avatar, Card, Divider, Txt } from './primitives';
 
-/* ---------- Tile de estatística ---------- */
-
 export function StatTile({ value, label, danger }: { value: string; label: string; danger?: boolean }) {
   const { colors } = useTheme();
   return (
@@ -24,8 +22,6 @@ export function StatTile({ value, label, danger }: { value: string; label: strin
     </Card>
   );
 }
-
-/* ---------- Linha de usuário conectado ---------- */
 
 export function SessionRow({
   user,
@@ -64,8 +60,6 @@ export function SessionRow({
   );
 }
 
-/* ---------- Card "Precisa de atenção" ---------- */
-
 export function AttentionCard({
   user,
   line,
@@ -95,8 +89,6 @@ export function AttentionCard({
     </Pressable>
   );
 }
-
-/* ---------- Card de sessão ativa (detalhes) ---------- */
 
 export function SessionCard({
   session,
@@ -147,8 +139,6 @@ export function SessionCard({
     </Card>
   );
 }
-
-/* ---------- Card de alerta ---------- */
 
 export function alertMeta(kind: AlertItem['kind'], colors: ReturnType<typeof useTheme>['colors']) {
   switch (kind) {

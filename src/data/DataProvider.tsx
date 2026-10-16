@@ -51,7 +51,6 @@ type DataValue = State & {
 
 const DataContext = createContext<DataValue | null>(null);
 
-/** Resolve alertas de excesso quando o usuário volta para dentro do limite, e de aluno parado quando ele volta a interagir. */
 function settleAlerts(alerts: AlertItem[], sessions: Session[], users: Record<string, User>, limits: PlanLimits, now: number) {
   const byUser = activeByUser(sessions);
   return alerts.map((a) => {
@@ -72,7 +71,6 @@ const STALL_CHANCE = 0.0015;
 const RESUME_CHANCE = 0.004;
 const MAX_OPEN_IDLE = 3;
 
-/** Avança a atividade de uma sessão: lição, quiz, minijogos e troca de módulo. */
 function stepActivity(
   rng: Rng,
   a: Activity,
@@ -110,7 +108,6 @@ function stepActivity(
       break;
   }
 
-  // Lição concluída
   let next: User = {
     ...user,
     xp: user.xp + 30,
@@ -180,7 +177,6 @@ function tick(state: State, rng: Rng, now: number): State {
     }
   }
 
-  // De vez em quando, um acesso simultâneo novo
   const openSimultaneous = alerts.filter((a) => !a.resolvedAt && a.kind === 'simultaneo').length;
   if (openSimultaneous < 3 && rng() < 0.03) {
     const byUser = activeByUser(sessions);
@@ -192,7 +188,6 @@ function tick(state: State, rng: Rng, now: number): State {
       let place = pickWeighted(rng, CITIES);
       while (place.city === first.city) place = pickWeighted(rng, CITIES);
       const user = users[userId];
-      // a outra pessoa usando a conta costuma estar em outro módulo
       const otherModule = pickModule(rng, user.plan, [first.activity?.moduleId ?? '']);
       const second = randomSession(rng, userId, now, { city: place.city, uf: place.uf });
       second.activity = {
@@ -219,7 +214,6 @@ function tick(state: State, rng: Rng, now: number): State {
     }
   }
 
-  // Atividade dos alunos
   let openIdle = alerts.filter((a) => !a.resolvedAt && a.kind === 'parado').length;
   const newAlerts: AlertItem[] = [];
   sessions = sessions.map((s) => {

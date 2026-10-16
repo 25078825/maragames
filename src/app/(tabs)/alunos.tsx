@@ -29,7 +29,6 @@ export default function StudentsScreen() {
   const [moduleFilter, setModuleFilter] = useState<string | undefined>(params.modulo);
   const [query, setQuery] = useState('');
 
-  // parâmetros vindos de outras telas (Ao vivo > Por módulo)
   const [prevParams, setPrevParams] = useState(params);
   if (params.modulo !== prevParams.modulo || params.aba !== prevParams.aba) {
     setPrevParams(params);
@@ -41,7 +40,6 @@ export default function StudentsScreen() {
     }
   }
 
-  /** Aluno conectado + a sessão mais recente dele. */
   const studying = useMemo(() => {
     const list: { user: User; session: Session }[] = [];
     for (const [userId, sessions] of byUser) {

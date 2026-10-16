@@ -4,7 +4,6 @@ import Svg, { Circle, Path } from 'react-native-svg';
 
 import { useTheme } from '@/theme/ThemeProvider';
 
-/** Curva suave (Catmull-Rom convertida em Bézier cúbica). */
 function smoothPath(points: [number, number][]) {
   if (points.length < 2) return '';
   let d = `M ${points[0][0]} ${points[0][1]}`;

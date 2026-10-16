@@ -58,7 +58,6 @@ export default function SettingsScreen() {
     trackColor: { false: colors.borderStrong, true: colors.primary },
     thumbColor: '#FFFFFF',
     ios_backgroundColor: colors.borderStrong,
-    // react-native-web usa activeThumbColor
     ...(Platform.OS === 'web' ? ({ activeThumbColor: '#FFFFFF' } as object) : {}),
   };
 

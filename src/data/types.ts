@@ -12,7 +12,6 @@ export type User = {
   plan: Plan;
   blocked: boolean;
   tint: TintName;
-  /** lições concluídas por módulo */
   progress: Record<string, number>;
   currentModuleId: string;
   xp: number;
@@ -37,7 +36,6 @@ export type Activity = {
   kind: ActivityKind;
   since: number;
   lastActionAt: number;
-  /** sessão aberta, mas o aluno parou de interagir */
   stalled?: boolean;
   idleAlerted?: boolean;
 };
@@ -56,9 +54,7 @@ export type Session = {
   id: string;
   userId: string;
   kind: 'mobile' | 'desktop';
-  /** "Galaxy A54 · Android 14" / "Windows 11 · Chrome" */
   title: string;
-  /** "Android 14" / "Windows 11" */
   system: string;
   osFamily: OsFamily;
   ip: string;

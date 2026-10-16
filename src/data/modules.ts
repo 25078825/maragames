@@ -1,6 +1,5 @@
 import type { Activity, ActivityKind, Module } from './types';
 
-/** Módulos da plataforma (maragames.app). Os três últimos são exclusivos do Premium. */
 export const MODULES: Module[] = [
   { id: 'game-design', n: 1, name: 'Fundamentos de Game Design', short: 'Game Design', lessons: 20 },
   { id: 'engines', n: 2, name: 'Game Engines', short: 'Engines', lessons: 20 },
@@ -18,7 +17,6 @@ export const MODULES: Module[] = [
 
 export const MODULE_BY_ID: Record<string, Module> = Object.fromEntries(MODULES.map((m) => [m.id, m]));
 
-/** Peso de popularidade de cada módulo na simulação. */
 export const MODULE_WEIGHT: Record<string, number> = {
   'game-design': 14,
   engines: 12,
@@ -51,7 +49,6 @@ export const ACTIVITY_LONG: Record<ActivityKind, string> = {
 };
 
 export const MIN_MS = 60_000;
-/** Sem interação por este tempo, o aluno é considerado parado. */
 export const IDLE_MS = 15 * MIN_MS;
 
 export function levelFor(xp: number) {
@@ -62,13 +59,11 @@ export function isIdle(a: Activity | undefined, now: number) {
   return !!a && now - a.lastActionAt >= IDLE_MS;
 }
 
-/** "Programação · Lição 7 · quiz" */
 export function activityLine(a: Activity) {
   const m = MODULE_BY_ID[a.moduleId];
   return `${m?.short ?? a.moduleId} · Lição ${a.lesson} · ${ACTIVITY_SHORT[a.kind]}`;
 }
 
-/** "Programação · L7" */
 export function activityCompact(a: Activity) {
   const m = MODULE_BY_ID[a.moduleId];
   return `${m?.short ?? a.moduleId} · L${a.lesson}`;

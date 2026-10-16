@@ -76,7 +76,6 @@ const LAST_NAMES = [
   'mendes', 'cardoso', 'teixeira', 'vieira', 'campos',
 ];
 
-
 export type Rng = () => number;
 
 export function createRng(seed: number): Rng {
@@ -275,7 +274,6 @@ export function createSeed(now: number): Seed {
     return u;
   };
 
-  // Contas do mockup
   const lucas = add(makeUser('u-lucas', 'lucas', 'silva', 'Free', 'neutral'));
   const ana = add(makeUser('u-ana', 'ana', 'beatriz', 'Premium', 'neutral', 'Ana Beatriz Costa'));
   const joao = add(makeUser('u-joao', 'joao', 'pedro', 'Free', 'neutral', 'João Pedro Lima'));
@@ -308,7 +306,6 @@ export function createSeed(now: number): Seed {
   s(maria.id, 41, 0, '186.215.3.60', 'Bacabal', 'MA');
   s(maria.id, 60, 13, '186.215.3.61', 'Bacabal', 'MA');
 
-  // Progresso e atividade das contas do mockup
   const ago = (m: number) => now - m * MIN;
   lucas.progress = { arte: 11, programacao: 2, curiosidades: 7 };
   lucas.currentModuleId = 'arte';
@@ -353,7 +350,6 @@ export function createSeed(now: number): Seed {
     { id: nextEventId(), at: ago(50), kind: 'login', text: 'Entrou pelo Galaxy A54 · São Luís' },
   ];
 
-  // Demais alunos
   const genericIds: string[] = [];
   let n = 0;
   for (const last of LAST_NAMES) {
@@ -369,7 +365,6 @@ export function createSeed(now: number): Seed {
     }
   }
 
-  // Sessões ativas: um aluno por sessão, todas dentro do limite
   const shuffled = [...genericIds].sort(() => rng() - 0.5);
   const activeNeeded = ACTIVE_TARGET - sessions.length;
   for (let i = 0; i < activeNeeded; i++) {
@@ -378,7 +373,6 @@ export function createSeed(now: number): Seed {
     const session = randomSession(rng, user.id, now - minutesAgo * MIN);
     session.activity = makeActivity(rng, user, now, session.startedAt);
     seedTimeline(rng, user, session, now);
-    // alguns alunos pararam de interagir; três estão quase no limite e geram alerta logo
     if (i % 41 === 7) {
       const idleFor = (16 + Math.floor(rng() * 25)) * MIN;
       session.activity = { ...session.activity, lastActionAt: now - idleFor, stalled: true, idleAlerted: true };
@@ -389,7 +383,6 @@ export function createSeed(now: number): Seed {
     sessions.push(session);
   }
 
-  // Histórico: sessões encerradas nos últimos 30 dias
   const startOfToday = new Date(now).setHours(0, 0, 0, 0);
   for (let d = 0; d < 30; d++) {
     const dayStart = startOfToday - d * DAY;
@@ -404,7 +397,6 @@ export function createSeed(now: number): Seed {
     }
   }
 
-  // Alertas abertos (mockup)
   alerts.push(
     {
       id: nextAlertId(),
@@ -440,7 +432,6 @@ export function createSeed(now: number): Seed {
     },
   );
 
-  // Alertas resolvidos hoje
   const resolvedKinds: AlertItem['kind'][] = ['simultaneo', 'limite', 'novoDispositivo', 'limite', 'simultaneo'];
   for (let i = 0; i < 11; i++) {
     const u = users[pick(rng, genericIds)];
@@ -465,7 +456,6 @@ export function createSeed(now: number): Seed {
     });
   }
 
-  // Série do gráfico: subida suave até o valor atual
   const series: number[] = [];
   const points = 32;
   for (let i = 0; i < points; i++) {

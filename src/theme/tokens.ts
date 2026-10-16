@@ -95,12 +95,6 @@ export const fonts = {
   semibold: 'Sora_600SemiBold',
 };
 
-/**
- * Escala tipográfica única do app (fonte Sora).
- * display: número principal · title: título da tela · subtitle: nome / título de painel
- * heading: título de seção e de card · body / bodyStrong: texto e nomes em lista
- * caption: texto secundário · micro: metadados e rótulos da tab bar
- */
 export const type = {
   display: { fontFamily: fonts.semibold, fontSize: 44, lineHeight: 52, letterSpacing: -1 },
   title: { fontFamily: fonts.semibold, fontSize: 26, lineHeight: 32, letterSpacing: -0.4 },

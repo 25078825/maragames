@@ -17,8 +17,6 @@ import { initials } from '@/data/selectors';
 import { makeStyles, useTheme } from '@/theme/ThemeProvider';
 import { fonts, radius, space, type } from '@/theme/tokens';
 
-/* ---------- Texto ---------- */
-
 const textVariants = type;
 
 export type TextVariant = keyof typeof textVariants;
@@ -33,22 +31,16 @@ export function Txt({
   return <Text {...rest} style={[textVariants[variant], { color: color ?? colors.text }, style]} />;
 }
 
-/* ---------- Tela ---------- */
-
 export function Screen({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   return <View style={[{ flex: 1, backgroundColor: colors.bg, paddingTop: insets.top }, style]}>{children}</View>;
 }
 
-/* ---------- Card ---------- */
-
 export function Card({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   const s = useStyles();
   return <View style={[s.card, style]}>{children}</View>;
 }
-
-/* ---------- Avatar ---------- */
 
 export function Avatar({
   user,
@@ -85,8 +77,6 @@ export function Avatar({
     </View>
   );
 }
-
-/* ---------- Chip ---------- */
 
 export function Chip({
   label,
@@ -132,8 +122,6 @@ export function Chip({
     </Pressable>
   );
 }
-
-/* ---------- Botões ---------- */
 
 export function Button({
   label,
@@ -202,8 +190,6 @@ export function IconButton({
   );
 }
 
-/* ---------- Segmentado ---------- */
-
 export function Segmented<T extends string>({
   options,
   value,
@@ -235,8 +221,6 @@ export function Segmented<T extends string>({
   );
 }
 
-/* ---------- Campo ---------- */
-
 export function Field({
   icon: Icon,
   right,
@@ -259,8 +243,6 @@ export function Field({
   );
 }
 
-/* ---------- Barra de progresso ---------- */
-
 export function ProgressBar({ value, color, height = 6 }: { value: number; color?: string; height?: number }) {
   const { colors } = useTheme();
   const pct = Math.max(0, Math.min(1, value));
@@ -271,14 +253,10 @@ export function ProgressBar({ value, color, height = 6 }: { value: number; color
   );
 }
 
-/* ---------- Divisória ---------- */
-
 export function Divider({ style }: { style?: StyleProp<ViewStyle> }) {
   const { colors } = useTheme();
   return <View style={[{ height: 1, backgroundColor: colors.border }, style]} />;
 }
-
-/* ---------- Estilos ---------- */
 
 const useStyles = makeStyles((c) => ({
   card: {
