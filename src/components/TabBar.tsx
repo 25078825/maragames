@@ -16,7 +16,7 @@ const ITEMS: Record<string, { label: string; icon: LucideIcon }> = {
   ajustes: { label: 'Ajustes', icon: SlidersHorizontal },
 };
 
-export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
+export function TabBar({ state, navigation }: BottomTabBarProps) {
   const s = useStyles();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -37,8 +37,8 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
             accessibilityRole="tab"
             accessibilityState={{ selected: focused }}
             onPress={() => {
-              const event = emitter.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-              if (!focused && !event.defaultPrevented) navigateToTab(route.key);
+              const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+              if (!focused && !event.defaultPrevented) navigation.navigate(route.name);
             }}
             style={s.item}>
             {focused ? <View style={s.indicator} /> : null}
