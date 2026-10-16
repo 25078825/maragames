@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, Chip, Field, gutter, Segmented, Txt } from '@/components/primitives';
 import { useData } from '@/data/DataProvider';
 import { CITIES, UF_NAMES } from '@/data/mock';
+import { MODULES } from '@/data/modules';
 import { applyFilters, DEFAULT_FILTERS } from '@/data/selectors';
 import { useNow } from '@/data/useNow';
 import type { Filters, OsFamily, Plan, PeriodFilter, StatusFilter } from '@/data/types';
@@ -215,6 +216,20 @@ export default function FiltersSheet() {
                   label={p}
                   selected={draft.plans.includes(p)}
                   onPress={() => setDraft((d) => ({ ...d, plans: toggle(d.plans, p) }))}
+                />
+              ))}
+            </View>
+
+            <Txt variant="label" color={colors.textMuted} style={s.section}>
+              Módulo
+            </Txt>
+            <View style={s.wrap}>
+              {MODULES.map((m) => (
+                <Chip
+                  key={m.id}
+                  label={m.short}
+                  selected={draft.modules.includes(m.id)}
+                  onPress={() => setDraft((d) => ({ ...d, modules: toggle(d.modules, m.id) }))}
                 />
               ))}
             </View>
