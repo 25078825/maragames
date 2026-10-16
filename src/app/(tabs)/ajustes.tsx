@@ -18,6 +18,10 @@ const FAQ = [
     a: 'Quando a mesma conta tem mais sessões ativas do que o limite do plano, ou aparece em cidades diferentes num intervalo curto.',
   },
   {
+    q: 'Quando um aluno é considerado parado?',
+    a: 'Quando está conectado, mas sem nenhuma interação na lição, quiz ou minijogo há 15 minutos ou mais.',
+  },
+  {
     q: 'Como encerrar um acesso?',
     a: 'Abra a conta pelo Ao vivo ou pelos Alertas e toque em Encerrar na sessão. Encerrar todas derruba todas as sessões da conta.',
   },

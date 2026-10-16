@@ -52,6 +52,9 @@ export default function AlertsScreen() {
         </>
       );
     }
+    if (a.kind === 'parado') {
+      return <Button label="Ver aluno" variant="outline" size="sm" onPress={() => openAccount(a)} />;
+    }
     if (a.kind === 'bloqueio') {
       return <Button label="Reverter bloqueio" variant="outline" size="sm" disabled={!canManage} onPress={() => confirmRevert(a)} />;
     }
