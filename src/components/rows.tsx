@@ -34,6 +34,7 @@ export function SessionRow({
   onPress,
   last,
   danger,
+  subtitleColor,
 }: {
   user: User;
   subtitle: string;
@@ -41,6 +42,7 @@ export function SessionRow({
   onPress?: () => void;
   last?: boolean;
   danger?: boolean;
+  subtitleColor?: string;
 }) {
   const s = useStyles();
   const { colors } = useTheme();
@@ -51,7 +53,7 @@ export function SessionRow({
         <Txt variant="bodyMedium" numberOfLines={1}>
           {user.handle}
         </Txt>
-        <Txt variant="monoSmall" color={colors.textMuted} numberOfLines={1}>
+        <Txt variant="monoSmall" color={subtitleColor ?? colors.textMuted} numberOfLines={1}>
           {subtitle}
         </Txt>
       </View>
@@ -100,10 +102,12 @@ export function SessionCard({
   session,
   since,
   action,
+  activity,
 }: {
   session: Session;
   since: string;
   action?: ReactNode;
+  activity?: { line: string; meta: string; idle: boolean };
 }) {
   const s = useStyles();
   const { colors } = useTheme();
@@ -123,6 +127,16 @@ export function SessionCard({
           </Txt>
         </View>
       </View>
+      {activity ? (
+        <View style={[s.activity, activity.idle && s.activityIdle]}>
+          <Txt variant="small" numberOfLines={1}>
+            {activity.line}
+          </Txt>
+          <Txt variant="monoSmall" color={activity.idle ? colors.warning : colors.textMuted} numberOfLines={1}>
+            {activity.meta}
+          </Txt>
+        </View>
+      ) : null}
       <Divider style={{ marginTop: 14, marginBottom: 10 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <Txt variant="monoSmall" color={colors.textFaint}>
@@ -146,6 +160,8 @@ export function alertMeta(kind: AlertItem['kind'], colors: ReturnType<typeof use
       return { label: 'Bloqueio automático', color: colors.primaryText, bar: colors.primary };
     case 'novoDispositivo':
       return { label: 'Baixa · Novo dispositivo', color: colors.textMuted, bar: colors.neutralBar };
+    case 'parado':
+      return { label: 'Média · Aluno parado', color: colors.warning, bar: colors.warning };
   }
 }
 
@@ -217,6 +233,18 @@ const useStyles = makeStyles((c) => ({
     borderColor: c.border,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  activity: {
+    marginTop: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 9,
+    backgroundColor: c.bg,
+    gap: 3,
+  },
+  activityIdle: {
+    borderWidth: 1,
+    borderColor: c.warning,
   },
   alertCard: {
     paddingVertical: 16,
